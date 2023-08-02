@@ -11,11 +11,12 @@
       </x:Property.Attributes>
     </x:Property>
     <x:Property Name="in_shouldCreateSubFolder" Type="InArgument(x:Boolean)" />
+    <x:Property Name="io_retryNumber" Type="InOutArgument(x:Int32)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>1307,1486</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>880,1687</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>InitStep_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -45,6 +46,8 @@
       <x:String>System.Xml.Linq</x:String>
       <x:String>UiPath.Core</x:String>
       <x:String>UiPath.Core.Activities</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -81,24 +84,32 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Workflow</AssemblyReference>
       <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>UiPath.Studio.Constants</AssemblyReference>
+      <AssemblyReference>NPOI</AssemblyReference>
+      <AssemblyReference>System.Memory.Data</AssemblyReference>
+      <AssemblyReference>System.Console</AssemblyReference>
+      <AssemblyReference>System.Configuration.ConfigurationManager</AssemblyReference>
+      <AssemblyReference>System.Security.Permissions</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.Private.Uri</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="-update stepName and prevStepName in config &#xA;- create a sub folder for this step" DisplayName="InitStep" sap:VirtualizedContainerService.HintSize="526,1421" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="-update stepName and prevStepName in config &#xA;- create a sub folder for this step" DisplayName="InitStep" sap:VirtualizedContainerService.HintSize="552,1622" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <If Condition="[in_stepName&lt;&gt;io_config(&quot;stepName&quot;)]" DisplayName="If not coming from retry" sap:VirtualizedContainerService.HintSize="484,639" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[in_stepName&lt;&gt;io_config(&quot;stepName&quot;)]" DisplayName="If not coming from retry" sap:VirtualizedContainerService.HintSize="510,840" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <Sequence sap:VirtualizedContainerService.HintSize="304,452" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence sap:VirtualizedContainerService.HintSize="476,658" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="update prev Step name " sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+          <Assign DisplayName="update prev Step name " sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_1">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[io_config("prevStepName")]</OutArgument>
             </Assign.To>
@@ -106,7 +117,7 @@
               <InArgument x:TypeArguments="x:String">[io_config("stepName")]</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="update Step name " sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign DisplayName="update Step name " sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_2">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[io_config("stepName")]</OutArgument>
             </Assign.To>
@@ -114,7 +125,7 @@
               <InArgument x:TypeArguments="x:String">[in_stepName]</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="update Step folder path" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+          <Assign DisplayName="update Step folder path" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_3">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[io_config("stepFolder")]</OutArgument>
             </Assign.To>
@@ -122,12 +133,20 @@
               <InArgument x:TypeArguments="x:String">[io_config("TempFolderPath")+"\"+io_config("stepName")]</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="update Step folder path" sap:VirtualizedContainerService.HintSize="262,60" sap2010:WorkflowViewState.IdRef="Assign_4">
+          <Assign DisplayName="update Step folder path" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_4">
             <Assign.To>
               <OutArgument x:TypeArguments="x:String">[io_config("prevStepFolder")]</OutArgument>
             </Assign.To>
             <Assign.Value>
               <InArgument x:TypeArguments="x:String">[io_config("TempFolderPath")+"\"+io_config("prevStepName")]</InArgument>
+            </Assign.Value>
+          </Assign>
+          <Assign DisplayName="Reset Retry Number" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_5">
+            <Assign.To>
+              <OutArgument x:TypeArguments="x:Int32">[io_retryNumber]</OutArgument>
+            </Assign.To>
+            <Assign.Value>
+              <InArgument x:TypeArguments="x:Int32">0</InArgument>
             </Assign.Value>
           </Assign>
         </Sequence>
@@ -142,16 +161,16 @@
         </Sequence>
       </If.Else>
     </If>
-    <If Condition="[in_shouldCreateSubFolder]" sap:VirtualizedContainerService.HintSize="484,477" sap2010:WorkflowViewState.IdRef="If_2">
+    <If Condition="[in_shouldCreateSubFolder]" sap:VirtualizedContainerService.HintSize="510,523" sap2010:WorkflowViewState.IdRef="If_2">
       <If.Then>
-        <Sequence sap:VirtualizedContainerService.HintSize="376,290" sap2010:WorkflowViewState.IdRef="Sequence_4">
+        <Sequence sap:VirtualizedContainerService.HintSize="376,341" sap2010:WorkflowViewState.IdRef="Sequence_4">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" DisplayName="Delete the preivous sub folder" sap:VirtualizedContainerService.HintSize="334,79" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[io_config(&quot;stepFolder&quot;)]" />
-          <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create a new sub folder" sap:VirtualizedContainerService.HintSize="334,79" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[io_config(&quot;stepFolder&quot;)]" />
+          <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" DisplayName="Delete the preivous sub folder" sap:VirtualizedContainerService.HintSize="334,133" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[io_config(&quot;stepFolder&quot;)]" />
+          <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create a new sub folder" sap:VirtualizedContainerService.HintSize="334,80" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[io_config(&quot;stepFolder&quot;)]" />
         </Sequence>
       </If.Then>
       <If.Else>
