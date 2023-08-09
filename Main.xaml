@@ -128,18 +128,19 @@
         <x:Boolean x:Key="IsPinned">False</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="1.Get configuration file path from orchestrator&#xA;2.Load all configuration and assets into config&lt;dictionary&gt;&#xA;3.Load all credentials into credentials&lt;string,&lt;string,secureString&gt;&gt;&#xA;4.Create TempFolder and add path into config&lt;string,string&gt;&#xA;5.Add log entry into history excel sheet" DisplayName="Initialization" sap:VirtualizedContainerService.HintSize="385,164" sap2010:WorkflowViewState.IdRef="State_1">
+    <State x:Name="__ReferenceID0" sap2010:Annotation.AnnotationText="1.Get configuration file path from orchestrator&#xA;2.Load all configuration and assets into config&lt;dictionary&gt;&#xA;3.Load all credentials into credentials&lt;string,&lt;string,secureString&gt;&gt;&#xA;4.Create TempFolder and add path into config&lt;string,string&gt;&#xA;5.Add log entry into history excel sheet" DisplayName="Initialization" sap:VirtualizedContainerService.HintSize="560,2893" sap2010:WorkflowViewState.IdRef="State_1">
       <State.Entry>
-        <TryCatch DisplayName="Try Read Configurations and prepare requierd files" sap:VirtualizedContainerService.HintSize="518,3807" sap2010:WorkflowViewState.IdRef="TryCatch_20">
+        <TryCatch DisplayName="Try Read Configurations and prepare requierd files" sap:VirtualizedContainerService.HintSize="514,2364" sap2010:WorkflowViewState.IdRef="TryCatch_20">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
           <TryCatch.Try>
-            <Sequence DisplayName="Init Sequence" sap:VirtualizedContainerService.HintSize="480,2649" sap2010:WorkflowViewState.IdRef="Sequence_42">
+            <Sequence DisplayName="Init Sequence" sap:VirtualizedContainerService.HintSize="476,1206" sap2010:WorkflowViewState.IdRef="Sequence_42">
               <Sequence.Variables>
                 <Variable x:TypeArguments="x:String" Name="configPath" />
+                <Variable x:TypeArguments="x:String" Name="ConfigStorageBucketName" />
               </Sequence.Variables>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -147,159 +148,84 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="438,141" sap2010:WorkflowViewState.IdRef="LogMessage_38" Level="Info" Message="[&quot;Process Started.....&quot;]">
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="434,141" sap2010:WorkflowViewState.IdRef="LogMessage_38" Level="Info" Message="[&quot;Process Started.....&quot;]">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
               </ui:LogMessage>
-              <TryCatch sap2010:Annotation.AnnotationText="Get config file path from orchestrator&#xA;" DisplayName="Try get config file path" sap:VirtualizedContainerService.HintSize="438,1224" sap2010:WorkflowViewState.IdRef="TryCatch_16">
+              <Assign DisplayName="Assign Storage Bucket Name" sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_64">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[ConfigStorageBucketName]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">NuummiteTemplateConfig</InArgument>
+                </Assign.Value>
+              </Assign>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize config&lt;string,string&gt;,credential&lt;string,string&gt;&#xA;Read configuration files&#xA;Add config,asset into config&lt;string ,string&gt;&#xA;Add credentials into credentials&lt;string,&lt;string,secureString&gt;&gt;" DisplayName="Invoke InitConfig workflow" sap:VirtualizedContainerService.HintSize="434,215" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_36" UnSafe="False" WorkflowFileName="01-Initialization\InitConfig.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="out_config">
+                    <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
+                  </OutArgument>
+                  <OutArgument x:TypeArguments="scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString))" x:Key="out_credentials">
+                    <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString))" ExpressionText="credentials" />
+                  </OutArgument>
+                  <InOutArgument x:TypeArguments="x:Int32" x:Key="io_maxRetry">
+                    <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="maxRetry" />
+                  </InOutArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_ConfigStorageBucketName">
+                    <VisualBasicValue x:TypeArguments="x:String" ExpressionText="ConfigStorageBucketName" />
+                  </InArgument>
+                </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <TryCatch.Try>
-                  <Sequence sap:VirtualizedContainerService.HintSize="376,443" sap2010:WorkflowViewState.IdRef="Sequence_43">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,141" sap2010:WorkflowViewState.IdRef="LogMessage_33" Level="Info" Message="[&quot;Getting config file path from orchestrator ........&quot;]">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:LogMessage>
-                    <ui:GetRobotAsset TimeoutMS="{x:Null}" sap2010:Annotation.AnnotationText="Get configuration file path from orchestrator" AssetName="CONFIG_FILE_PATH_ASSET_NAME" CacheStrategy="None" DisplayName="Get config path" sap:VirtualizedContainerService.HintSize="334,174" sap2010:WorkflowViewState.IdRef="GetRobotAsset_4">
-                      <ui:GetRobotAsset.Value>
-                        <OutArgument x:TypeArguments="x:String">[configPath]</OutArgument>
-                      </ui:GetRobotAsset.Value>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:GetRobotAsset>
-                  </Sequence>
-                </TryCatch.Try>
-                <TryCatch.Catches>
-                  <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,428" sap2010:WorkflowViewState.IdRef="Catch`1_16">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <ActivityAction x:TypeArguments="s:Exception">
-                      <ActivityAction.Argument>
-                        <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-                      </ActivityAction.Argument>
-                      <Sequence sap:VirtualizedContainerService.HintSize="376,359" sap2010:WorkflowViewState.IdRef="Sequence_41">
-                        <sap:WorkflowViewStateService.ViewState>
-                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                            <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                          </scg:Dictionary>
-                        </sap:WorkflowViewStateService.ViewState>
-                        <ui:LogMessage DisplayName="Log config path error" sap:VirtualizedContainerService.HintSize="334,141" sap2010:WorkflowViewState.IdRef="LogMessage_32" Level="Error" Message="[&quot;The Bot cannot read config file path from assets , please check if the asset exists with the correct name&quot;]">
-                          <sap:WorkflowViewStateService.ViewState>
-                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                              <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                            </scg:Dictionary>
-                          </sap:WorkflowViewStateService.ViewState>
-                        </ui:LogMessage>
-                        <Throw Exception="[new BusinessRuleException(&quot;The Bot cannot read config file path from assets , please check if the asset exists with the correct name&quot;)]" sap:VirtualizedContainerService.HintSize="334,90" sap2010:WorkflowViewState.IdRef="Throw_1" />
-                      </Sequence>
-                    </ActivityAction>
-                  </Catch>
-                </TryCatch.Catches>
-              </TryCatch>
-              <If sap2010:Annotation.AnnotationText="If config file path loaded then perform initialization" Condition="[Not String.IsNullOrWhiteSpace(configPath)]" DisplayName="If config file path available" sap:VirtualizedContainerService.HintSize="438,1116" sap2010:WorkflowViewState.IdRef="If_1">
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize TempFolderPath&#xA;Add Key into config&lt;string,string&gt;&#xA;Create Folder using TempFolderPath" DisplayName="Invoke InitTempFolder workflow" sap:VirtualizedContainerService.HintSize="434,170" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_37" UnSafe="False" WorkflowFileName="01-Initialization\InitTempFolder.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
                   </scg:Dictionary>
                 </sap:WorkflowViewStateService.ViewState>
-                <If.Then>
-                  <Sequence DisplayName="Load all configuration" sap:VirtualizedContainerService.HintSize="376,903" sap2010:WorkflowViewState.IdRef="Sequence_46">
-                    <sap:WorkflowViewStateService.ViewState>
-                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                        <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                      </scg:Dictionary>
-                    </sap:WorkflowViewStateService.ViewState>
-                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize config&lt;string,string&gt;,credential&lt;string,string&gt;&#xA;Read configuration files&#xA;Add config,asset into config&lt;string ,string&gt;&#xA;Add credentials into credentials&lt;string,&lt;string,secureString&gt;&gt;" DisplayName="Invoke InitConfig workflow" sap:VirtualizedContainerService.HintSize="334,215" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_36" UnSafe="False" WorkflowFileName="01-Initialization\InitConfig.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_configPath">[configPath]</InArgument>
-                        <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="out_config">[config]</OutArgument>
-                        <OutArgument x:TypeArguments="scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString))" x:Key="out_credentials">[credentials]</OutArgument>
-                        <InOutArgument x:TypeArguments="x:Int32" x:Key="io_maxRetry">[maxRetry]</InOutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:InvokeWorkflowFile>
-                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize TempFolderPath&#xA;Add Key into config&lt;string,string&gt;&#xA;Create Folder using TempFolderPath" DisplayName="Invoke InitTempFolder workflow" sap:VirtualizedContainerService.HintSize="334,170" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_37" UnSafe="False" WorkflowFileName="01-Initialization\InitTempFolder.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:InvokeWorkflowFile>
-                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get input data from argument or orchestrator&#xA;Add input data to config" DisplayName="Invoke GetInputData workflow" sap:VirtualizedContainerService.HintSize="334,155" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_38" UnSafe="False" WorkflowFileName="01-Initialization\GetInputData.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <OutArgument x:TypeArguments="x:String" x:Key="out_inputData">[proccessingData]</OutArgument>
-                        <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="in_config">[config]</InArgument>
-                        <InArgument x:TypeArguments="x:String" x:Key="in_sampleData">[in_sampleData]</InArgument>
-                        <InOutArgument x:TypeArguments="ui:QueueItem" x:Key="io_queueItem">[queueItem]</InOutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:InvokeWorkflowFile>
-                    <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize log&#xA;Add a new line to HistoryLog Excel Sheet" DisplayName="Invoke InitHistory workflow" sap:VirtualizedContainerService.HintSize="334,155" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_39" UnSafe="False" WorkflowFileName="01-Initialization\InitHistory.xaml">
-                      <ui:InvokeWorkflowFile.Arguments>
-                        <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
-                      </ui:InvokeWorkflowFile.Arguments>
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
-                    </ui:InvokeWorkflowFile>
-                  </Sequence>
-                </If.Then>
-                <If.Else>
-                  <Sequence DisplayName="" sap2010:WorkflowViewState.IdRef="Sequence_108" />
-                </If.Else>
-              </If>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Get input data from argument or orchestrator&#xA;Add input data to config" DisplayName="Invoke GetInputData workflow" sap:VirtualizedContainerService.HintSize="434,155" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_38" UnSafe="False" WorkflowFileName="01-Initialization\GetInputData.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <OutArgument x:TypeArguments="x:String" x:Key="out_inputData">[proccessingData]</OutArgument>
+                  <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="in_config">[config]</InArgument>
+                  <InArgument x:TypeArguments="x:String" x:Key="in_sampleData">[in_sampleData]</InArgument>
+                  <InOutArgument x:TypeArguments="ui:QueueItem" x:Key="io_queueItem">[queueItem]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
+              <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Initialize log&#xA;Add a new line to HistoryLog Excel Sheet" DisplayName="Invoke InitHistory workflow" sap:VirtualizedContainerService.HintSize="434,155" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_39" UnSafe="False" WorkflowFileName="01-Initialization\InitHistory.xaml">
+                <ui:InvokeWorkflowFile.Arguments>
+                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                </ui:InvokeWorkflowFile.Arguments>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+              </ui:InvokeWorkflowFile>
             </Sequence>
           </TryCatch.Try>
           <TryCatch.Catches>
-            <Catch x:TypeArguments="ui:BusinessRuleException" sap:VirtualizedContainerService.HintSize="484,423" sap2010:WorkflowViewState.IdRef="Catch`1_21">
+            <Catch x:TypeArguments="ui:BusinessRuleException" sap:VirtualizedContainerService.HintSize="480,423" sap2010:WorkflowViewState.IdRef="Catch`1_21">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -332,10 +258,10 @@
                 </Sequence>
               </ActivityAction>
             </Catch>
-            <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="484,423" sap2010:WorkflowViewState.IdRef="Catch`1_22">
+            <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="480,423" sap2010:WorkflowViewState.IdRef="Catch`1_22">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
@@ -883,18 +809,10 @@
                       </sap:WorkflowViewStateService.ViewState>
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="00-ReusableWorkflows\InitStep.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_103" UnSafe="False" WorkflowFileName="00-ReusableWorkflows\InitStep.xaml">
                         <ui:InvokeWorkflowFile.Arguments>
-                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">
-                            <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
-                          </InOutArgument>
-                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">
-                            <Literal x:TypeArguments="x:String">02-ExampleStep-A</Literal>
-                          </InArgument>
-                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">
-                            <Literal x:TypeArguments="x:Boolean" Value="True" />
-                          </InArgument>
-                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">
-                            <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="retry" />
-                          </InOutArgument>
+                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">02-ExampleStep-A</InArgument>
+                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">True</InArgument>
+                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">[retry]</InOutArgument>
                         </ui:InvokeWorkflowFile.Arguments>
                       </ui:InvokeWorkflowFile>
                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Perform the tasks of this step" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_68" UnSafe="False" WorkflowFileName="[config(&quot;stepName&quot;)+&quot;\Process.xaml&quot;]">
@@ -1094,18 +1012,10 @@
                               </sap:WorkflowViewStateService.ViewState>
                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="00-ReusableWorkflows\InitStep.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_126" UnSafe="False" WorkflowFileName="00-ReusableWorkflows\InitStep.xaml">
                                 <ui:InvokeWorkflowFile.Arguments>
-                                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">
-                                    <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
-                                  </InOutArgument>
-                                  <InArgument x:TypeArguments="x:String" x:Key="in_stepName">
-                                    <Literal x:TypeArguments="x:String">03-ExampleStep-B</Literal>
-                                  </InArgument>
-                                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">
-                                    <Literal x:TypeArguments="x:Boolean" Value="True" />
-                                  </InArgument>
-                                  <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">
-                                    <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="retry" />
-                                  </InOutArgument>
+                                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                                  <InArgument x:TypeArguments="x:String" x:Key="in_stepName">03-ExampleStep-B</InArgument>
+                                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">True</InArgument>
+                                  <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">[retry]</InOutArgument>
                                 </ui:InvokeWorkflowFile.Arguments>
                               </ui:InvokeWorkflowFile>
                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Perform the tasks of this step" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_127" UnSafe="False" WorkflowFileName="[config(&quot;stepName&quot;)+&quot;\Process.xaml&quot;]">
@@ -1269,18 +1179,10 @@
                                       </sap:WorkflowViewStateService.ViewState>
                                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="00-ReusableWorkflows\InitStep.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_132" UnSafe="False" WorkflowFileName="00-ReusableWorkflows\InitStep.xaml">
                                         <ui:InvokeWorkflowFile.Arguments>
-                                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">
-                                            <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
-                                          </InOutArgument>
-                                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">
-                                            <Literal x:TypeArguments="x:String">04-ExampleStep-C</Literal>
-                                          </InArgument>
-                                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">
-                                            <Literal x:TypeArguments="x:Boolean" Value="True" />
-                                          </InArgument>
-                                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">
-                                            <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="retry" />
-                                          </InOutArgument>
+                                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">04-ExampleStep-C</InArgument>
+                                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">True</InArgument>
+                                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">[retry]</InOutArgument>
                                         </ui:InvokeWorkflowFile.Arguments>
                                       </ui:InvokeWorkflowFile>
                                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Perform the tasks of this step" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_133" UnSafe="False" WorkflowFileName="[config(&quot;stepName&quot;)+&quot;\Process.xaml&quot;]">
@@ -1444,18 +1346,10 @@
                                               </sap:WorkflowViewStateService.ViewState>
                                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="00-ReusableWorkflows\InitStep.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_138" UnSafe="False" WorkflowFileName="00-ReusableWorkflows\InitStep.xaml">
                                                 <ui:InvokeWorkflowFile.Arguments>
-                                                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">
-                                                    <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
-                                                  </InOutArgument>
-                                                  <InArgument x:TypeArguments="x:String" x:Key="in_stepName">
-                                                    <Literal x:TypeArguments="x:String">05-ExampleStep-D</Literal>
-                                                  </InArgument>
-                                                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">
-                                                    <Literal x:TypeArguments="x:Boolean" Value="True" />
-                                                  </InArgument>
-                                                  <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">
-                                                    <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="retry" />
-                                                  </InOutArgument>
+                                                  <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                                                  <InArgument x:TypeArguments="x:String" x:Key="in_stepName">05-ExampleStep-D</InArgument>
+                                                  <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">True</InArgument>
+                                                  <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">[retry]</InOutArgument>
                                                 </ui:InvokeWorkflowFile.Arguments>
                                               </ui:InvokeWorkflowFile>
                                               <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Perform the tasks of this step" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_139" UnSafe="False" WorkflowFileName="[config(&quot;stepName&quot;)+&quot;\Process.xaml&quot;]">
@@ -1619,18 +1513,10 @@
                                                       </sap:WorkflowViewStateService.ViewState>
                                                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="00-ReusableWorkflows\InitStep.xaml - Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,113" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_144" UnSafe="False" WorkflowFileName="00-ReusableWorkflows\InitStep.xaml">
                                                         <ui:InvokeWorkflowFile.Arguments>
-                                                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">
-                                                            <VisualBasicReference x:TypeArguments="scg:Dictionary(x:String, x:String)" ExpressionText="config" />
-                                                          </InOutArgument>
-                                                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">
-                                                            <Literal x:TypeArguments="x:String">06-ExampleStep-E</Literal>
-                                                          </InArgument>
-                                                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">
-                                                            <Literal x:TypeArguments="x:Boolean" Value="True" />
-                                                          </InArgument>
-                                                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">
-                                                            <VisualBasicReference x:TypeArguments="x:Int32" ExpressionText="retry" />
-                                                          </InOutArgument>
+                                                          <InOutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)" x:Key="io_config">[config]</InOutArgument>
+                                                          <InArgument x:TypeArguments="x:String" x:Key="in_stepName">06-ExampleStep-E</InArgument>
+                                                          <InArgument x:TypeArguments="x:Boolean" x:Key="in_shouldCreateSubFolder">True</InArgument>
+                                                          <InOutArgument x:TypeArguments="x:Int32" x:Key="io_retryNumber">[retry]</InOutArgument>
                                                         </ui:InvokeWorkflowFile.Arguments>
                                                       </ui:InvokeWorkflowFile>
                                                       <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Perform the tasks of this step" DisplayName="Invoke Workflow File" sap:VirtualizedContainerService.HintSize="334,144" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_145" UnSafe="False" WorkflowFileName="[config(&quot;stepName&quot;)+&quot;\Process.xaml&quot;]">
@@ -1921,9 +1807,7 @@
                                                   <Transition.To>
                                                     <x:Reference>__ReferenceID3</x:Reference>
                                                   </Transition.To>
-                                                  <Transition.Condition>
-                                                    <VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="businessException IsNot Nothing" />
-                                                  </Transition.Condition>
+                                                  <Transition.Condition>[businessException IsNot Nothing]</Transition.Condition>
                                                 </Transition>
                                               </State.Transitions>
                                             </State>
@@ -1953,9 +1837,7 @@
                                           <Transition.To>
                                             <x:Reference>__ReferenceID3</x:Reference>
                                           </Transition.To>
-                                          <Transition.Condition>
-                                            <VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="businessException IsNot Nothing" />
-                                          </Transition.Condition>
+                                          <Transition.Condition>[businessException IsNot Nothing]</Transition.Condition>
                                         </Transition>
                                       </State.Transitions>
                                     </State>
@@ -1985,9 +1867,7 @@
                                   <Transition.To>
                                     <x:Reference>__ReferenceID3</x:Reference>
                                   </Transition.To>
-                                  <Transition.Condition>
-                                    <VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="businessException IsNot Nothing" />
-                                  </Transition.Condition>
+                                  <Transition.Condition>[businessException IsNot Nothing]</Transition.Condition>
                                 </Transition>
                               </State.Transitions>
                             </State>
@@ -2017,9 +1897,7 @@
                           <Transition.To>
                             <x:Reference>__ReferenceID3</x:Reference>
                           </Transition.To>
-                          <Transition.Condition>
-                            <VisualBasicValue x:TypeArguments="x:Boolean" ExpressionText="businessException IsNot Nothing" />
-                          </Transition.Condition>
+                          <Transition.Condition>[businessException IsNot Nothing]</Transition.Condition>
                         </Transition>
                       </State.Transitions>
                     </State>

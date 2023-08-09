@@ -1,14 +1,14 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="InitConfig" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:p="http://schemas.uipath.com/workflow/activities/credentials" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="InitConfig" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:p="http://schemas.uipath.com/workflow/activities/credentials" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ss="clr-namespace:System.Security;assembly=System.Private.CoreLib" xmlns:ucas="clr-namespace:UiPath.Core.Activities.Storage;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_configPath" Type="InArgument(x:String)" />
     <x:Property Name="out_config" Type="OutArgument(scg:Dictionary(x:String, x:String))" />
     <x:Property Name="out_credentials" Type="OutArgument(scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString)))" />
     <x:Property Name="io_maxRetry" Type="InOutArgument(x:Int32)" />
+    <x:Property Name="in_ConfigStorageBucketName" Type="InArgument(x:String)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>718,6905</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>718,6448</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>InitConfig_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="74">
@@ -50,6 +50,9 @@
       <x:String>UiPath.Shared.Activities</x:String>
       <x:String>GlobalVariablesNamespace</x:String>
       <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>UiPath.Platform.ResourceHandling</x:String>
+      <x:String>UiPath.Core.Activities.Storage</x:String>
+      <x:String>UiPath.Core.Activities.Orchestrator</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -117,7 +120,7 @@
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence sap2010:Annotation.AnnotationText="Initialize configuration Dictionary to be used throughout the project.&#xA;The configuration files should contains 4 sheets ( Config , Constants , Assets, Credentials)&#xA;(Config , Constants , Assets) =&gt; config dictionary &#xA;(Credentials) =&gt; credentials dictionary" DisplayName="Initialize configuration file" sap:VirtualizedContainerService.HintSize="728,6840" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Initialize configuration Dictionary to be used throughout the project.&#xA;The configuration files should contains 4 sheets ( Config , Constants , Assets, Credentials)&#xA;(Config , Constants , Assets) =&gt; config dictionary &#xA;(Credentials) =&gt; credentials dictionary" DisplayName="Initialize configuration file" sap:VirtualizedContainerService.HintSize="728,6383" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="dt_config" />
       <Variable x:TypeArguments="sd:DataTable" Name="dt_constants" />
@@ -131,14 +134,14 @@
         <x:Boolean x:Key="IsPinned">False</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message - Initialize configuration file" sap:VirtualizedContainerService.HintSize="686,141" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Reading configuration file&quot;]">
+    <ui:LogMessage DisplayName="Log Message - Initialize configuration file" sap:VirtualizedContainerService.HintSize="686,141" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Downloading &amp; Reading configuration file&quot;]">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:LogMessage>
-    <Assign DisplayName="Init config dictionary" sap:VirtualizedContainerService.HintSize="686,81" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Init config dictionary" sap:VirtualizedContainerService.HintSize="686,82" sap2010:WorkflowViewState.IdRef="Assign_1">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[out_config]</OutArgument>
       </Assign.To>
@@ -146,7 +149,7 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, x:String)">[New Dictionary(Of String,String)]</InArgument>
       </Assign.Value>
     </Assign>
-    <Assign DisplayName="Init credentials dictionary" sap:VirtualizedContainerService.HintSize="686,81" sap2010:WorkflowViewState.IdRef="Assign_5">
+    <Assign DisplayName="Init credentials dictionary" sap:VirtualizedContainerService.HintSize="686,82" sap2010:WorkflowViewState.IdRef="Assign_5">
       <Assign.To>
         <OutArgument x:TypeArguments="scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString))">[out_credentials]</OutArgument>
       </Assign.To>
@@ -154,7 +157,7 @@
         <InArgument x:TypeArguments="scg:Dictionary(x:String, scg:KeyValuePair(x:String, ss:SecureString))">[New Dictionary(Of String,KeyValuePair(Of String,SecureString))]</InArgument>
       </Assign.Value>
     </Assign>
-    <Sequence DisplayName="take a copy of the config file and read it " sap:VirtualizedContainerService.HintSize="686,1225" sap2010:WorkflowViewState.IdRef="Sequence_29">
+    <Sequence DisplayName="Download a copy of the config file and read it " sap:VirtualizedContainerService.HintSize="686,804" sap2010:WorkflowViewState.IdRef="Sequence_29">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:String" Name="tempConfigPath" />
       </Sequence.Variables>
@@ -163,98 +166,69 @@
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-      <Assign sap:VirtualizedContainerService.HintSize="438,81" sap2010:WorkflowViewState.IdRef="Assign_15">
+      <Assign sap:VirtualizedContainerService.HintSize="434,82" sap2010:WorkflowViewState.IdRef="Assign_15">
         <Assign.To>
           <OutArgument x:TypeArguments="x:String">[tempConfigPath]</OutArgument>
         </Assign.To>
         <Assign.Value>
-          <InArgument x:TypeArguments="x:String">["config_"+Now.ToString("yyyyMMddhhmmss")+".xlsx"]</InArgument>
+          <InArgument x:TypeArguments="x:String">Config.xlsx</InArgument>
         </Assign.Value>
       </Assign>
-      <ui:CopyFile ContinueOnError="{x:Null}" Destination="[tempConfigPath]" DisplayName="Copy File" sap:VirtualizedContainerService.HintSize="438,154" sap2010:WorkflowViewState.IdRef="CopyFile_1" Path="[in_configPath]" />
-      <TryCatch DisplayName="Try to take a temp copy of config file then read it" sap:VirtualizedContainerService.HintSize="438,799" sap2010:WorkflowViewState.IdRef="TryCatch_4">
-        <TryCatch.Try>
-          <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Read Config file" sap:VirtualizedContainerService.HintSize="200,52" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" ReadOnly="True" Visible="False" WorkbookPath="[tempConfigPath]">
-            <ui:ExcelApplicationScope.Body>
-              <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-                <ActivityAction.Argument>
-                  <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-                </ActivityAction.Argument>
-                <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,448" sap2010:WorkflowViewState.IdRef="Sequence_31">
-                  <sap:WorkflowViewStateService.ViewState>
-                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                    </scg:Dictionary>
-                  </sap:WorkflowViewStateService.ViewState>
-                  <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_config]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="Config">
-                    <ui:ExcelReadRange.Range>
-                      <InArgument x:TypeArguments="x:String">
-                        <Literal x:TypeArguments="x:String" Value="" />
-                      </InArgument>
-                    </ui:ExcelReadRange.Range>
-                  </ui:ExcelReadRange>
-                  <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_constants]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="Constants">
-                    <ui:ExcelReadRange.Range>
-                      <InArgument x:TypeArguments="x:String">
-                        <Literal x:TypeArguments="x:String" Value="" />
-                      </InArgument>
-                    </ui:ExcelReadRange.Range>
-                  </ui:ExcelReadRange>
-                  <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_assets]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="Assets">
-                    <ui:ExcelReadRange.Range>
-                      <InArgument x:TypeArguments="x:String">
-                        <Literal x:TypeArguments="x:String" Value="" />
-                      </InArgument>
-                    </ui:ExcelReadRange.Range>
-                  </ui:ExcelReadRange>
-                  <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_credentials]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_4" SheetName="Credentials">
-                    <ui:ExcelReadRange.Range>
-                      <InArgument x:TypeArguments="x:String">
-                        <Literal x:TypeArguments="x:String" Value="" />
-                      </InArgument>
-                    </ui:ExcelReadRange.Range>
-                  </ui:ExcelReadRange>
-                </Sequence>
-              </ActivityAction>
-            </ui:ExcelApplicationScope.Body>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-          </ui:ExcelApplicationScope>
-        </TryCatch.Try>
-        <TryCatch.Catches>
-          <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="404,355" sap2010:WorkflowViewState.IdRef="Catch`1_4">
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-                <x:Boolean x:Key="IsPinned">False</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <ActivityAction x:TypeArguments="s:Exception">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
-              </ActivityAction.Argument>
-              <Sequence sap:VirtualizedContainerService.HintSize="376,286" sap2010:WorkflowViewState.IdRef="Sequence_30">
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" sap:VirtualizedContainerService.HintSize="334,133" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[tempConfigPath]" />
-                <Rethrow sap:VirtualizedContainerService.HintSize="334,25" sap2010:WorkflowViewState.IdRef="Rethrow_1" />
-              </Sequence>
-            </ActivityAction>
-          </Catch>
-        </TryCatch.Catches>
-        <TryCatch.Finally>
-          <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" sap:VirtualizedContainerService.HintSize="334,133" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[tempConfigPath]" />
-        </TryCatch.Finally>
-      </TryCatch>
+      <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" DisplayName="Delete the old one if exists" sap:VirtualizedContainerService.HintSize="434,133" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[tempConfigPath]" />
+      <ucas:DownloadStorageFile TimeoutMS="{x:Null}" Destination="[tempConfigPath]" DisplayName="Download The Config file from Storage Bucket" sap:VirtualizedContainerService.HintSize="434,133" sap2010:WorkflowViewState.IdRef="DownloadStorageFile_1" Path="Config.xlsx" StorageBucketName="[in_ConfigStorageBucketName]" />
+      <ui:ExcelApplicationScope Password="{x:Null}" AutoSave="False" CreateNewFile="False" DisplayName="Read Config file" sap:VirtualizedContainerService.HintSize="434,52" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" InstanceCachePeriod="3000" ReadOnly="True" Visible="False" WorkbookPath="[tempConfigPath]">
+        <ui:ExcelApplicationScope.Body>
+          <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="376,448" sap2010:WorkflowViewState.IdRef="Sequence_31">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_config]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="Config">
+                <ui:ExcelReadRange.Range>
+                  <InArgument x:TypeArguments="x:String">
+                    <Literal x:TypeArguments="x:String" Value="" />
+                  </InArgument>
+                </ui:ExcelReadRange.Range>
+              </ui:ExcelReadRange>
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_constants]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_2" SheetName="Constants">
+                <ui:ExcelReadRange.Range>
+                  <InArgument x:TypeArguments="x:String">
+                    <Literal x:TypeArguments="x:String" Value="" />
+                  </InArgument>
+                </ui:ExcelReadRange.Range>
+              </ui:ExcelReadRange>
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_assets]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_3" SheetName="Assets">
+                <ui:ExcelReadRange.Range>
+                  <InArgument x:TypeArguments="x:String">
+                    <Literal x:TypeArguments="x:String" Value="" />
+                  </InArgument>
+                </ui:ExcelReadRange.Range>
+              </ui:ExcelReadRange>
+              <ui:ExcelReadRange AddHeaders="True" DataTable="[dt_credentials]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="334,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_4" SheetName="Credentials">
+                <ui:ExcelReadRange.Range>
+                  <InArgument x:TypeArguments="x:String">
+                    <Literal x:TypeArguments="x:String" Value="" />
+                  </InArgument>
+                </ui:ExcelReadRange.Range>
+              </ui:ExcelReadRange>
+            </Sequence>
+          </ActivityAction>
+        </ui:ExcelApplicationScope.Body>
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </ui:ExcelApplicationScope>
+      <ui:Delete ResourceFile="{x:Null}" ContinueOnError="True" sap:VirtualizedContainerService.HintSize="434,133" sap2010:WorkflowViewState.IdRef="Delete_3" Path="[tempConfigPath]" />
     </Sequence>
-    <Sequence DisplayName="Build config dictionary" sap:VirtualizedContainerService.HintSize="686,3179" sap2010:WorkflowViewState.IdRef="Sequence_25">
+    <Sequence DisplayName="Build config dictionary" sap:VirtualizedContainerService.HintSize="686,3141" sap2010:WorkflowViewState.IdRef="Sequence_25">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
           <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -299,13 +273,13 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </ui:ForEachRow>
-      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add each constant into config&lt;dictionary&gt;" DataTable="[dt_constants]" DisplayName="For each contant row" sap:VirtualizedContainerService.HintSize="624,523" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
+      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add each constant into config&lt;dictionary&gt;" DataTable="[dt_constants]" DisplayName="For each contant row" sap:VirtualizedContainerService.HintSize="624,443" sap2010:WorkflowViewState.IdRef="ForEachRow_7">
         <ui:ForEachRow.Body>
           <ActivityAction x:TypeArguments="sd:DataRow">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="sd:DataRow" Name="Row" />
             </ActivityAction.Argument>
-            <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(Row(&quot;Name&quot;).ToString.Trim)]" DisplayName="If configuration row is not empty" sap:VirtualizedContainerService.HintSize="468,375" sap2010:WorkflowViewState.IdRef="If_8">
+            <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(Row(&quot;Name&quot;).ToString.Trim)]" DisplayName="If configuration row is not empty" sap:VirtualizedContainerService.HintSize="468,295" sap2010:WorkflowViewState.IdRef="If_8">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -343,13 +317,13 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </ui:ForEachRow>
-      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add each asset into config&lt;dictionary&gt;" DataTable="[dt_assets]" DisplayName="For each assets row" sap:VirtualizedContainerService.HintSize="624,1352" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
+      <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="Add each asset into config&lt;dictionary&gt;" DataTable="[dt_assets]" DisplayName="For each assets row" sap:VirtualizedContainerService.HintSize="624,1272" sap2010:WorkflowViewState.IdRef="ForEachRow_5">
         <ui:ForEachRow.Body>
           <ActivityAction x:TypeArguments="sd:DataRow">
             <ActivityAction.Argument>
               <DelegateInArgument x:TypeArguments="sd:DataRow" Name="Row" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="590,1204" sap2010:WorkflowViewState.IdRef="Sequence_12">
+            <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="590,1124" sap2010:WorkflowViewState.IdRef="Sequence_12">
               <Sequence.Variables>
                 <Variable x:TypeArguments="x:String" Name="assetValue" />
               </Sequence.Variables>
@@ -359,7 +333,7 @@
                   <x:Boolean x:Key="IsPinned">False</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(Row(&quot;Name&quot;).ToString.Trim)]" DisplayName="If asset row is not empty" sap:VirtualizedContainerService.HintSize="548,1116" sap2010:WorkflowViewState.IdRef="If_5">
+              <If sap2010:Annotation.AnnotationText="Read non-empty rows in the sheet." Condition="[Not String.IsNullOrWhiteSpace(Row(&quot;Name&quot;).ToString.Trim)]" DisplayName="If asset row is not empty" sap:VirtualizedContainerService.HintSize="548,1036" sap2010:WorkflowViewState.IdRef="If_5">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
@@ -447,6 +421,14 @@
         </Assign.To>
         <Assign.Value>
           <InArgument x:TypeArguments="x:String">[out_Config("ProcessNickName")+Now.ToString("yyyyMMddHHmmss")]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Add Storage Bucket Name to config" sap:VirtualizedContainerService.HintSize="624,82" sap2010:WorkflowViewState.IdRef="Assign_16">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:String">[out_config("ConfigStorageBucketName")]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:String">[in_ConfigStorageBucketName]</InArgument>
         </Assign.Value>
       </Assign>
       <Assign DisplayName="Add Step name to config" sap:VirtualizedContainerService.HintSize="624,82" sap2010:WorkflowViewState.IdRef="Assign_13">
